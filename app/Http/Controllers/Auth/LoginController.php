@@ -36,4 +36,12 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    /*
+    public function showLoginForm()
+    { 
+        $user = \Auth::user();
+        dd($user->toArray());
+        //return "test";
+    } */
 }

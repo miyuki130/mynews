@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 {{-- {{}} で囲まれたコードは、PHPで書かれた内容を表示するという意味になる --}}
-{{-- ({{}}の中身を文字列に置換し、HTMLの中に記載する)--}}
+{{-- ({{}}の中身を文字列に置換し、HTMLの中に記載する) --}}
 
 <html lang="{{ app()->getLocale() }}">
     <head>
@@ -43,8 +43,8 @@
     </head>
     <body>
         <div id="app">
-            {{--画面上部に表示するナビゲーションバー--}}
-            <nav class="navbar navber-expand-md navber-dark navber-laravel">
+            {{-- 画面上部に表示するナビゲーションバー --}}
+            <nav class="navbar navbar-expand-md navbar-dark navbar-laravel">
                 <div class="container">
                     <a class="navbar-brand" href="{{ url( '/' ) }}">
                         {{-- url(“パス”)は、そのままURLを返すメソッド --}}
@@ -64,6 +64,40 @@
                         {{-- Right Side Of Navbar --}}
                         <ul class="navbar-nav ml-auto">
                             
+                            {{-- Authentication Links --}}
+                            {{-- ログインしていなかったらログイン画面へのリンクを表示 --}}
+                            {{--@guestはユーザーが認証されていないことを判定するために使う--}}
+                            @guest
+                                <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
+                                {{--/loginというURLを生成。__はviewで使うための関数--}}
+                        
+                                
+                            {{-- ログインしていたらユーザー名とログアウトボタンを表示 --}}
+                            {{-- @elseはユーザーが認証されていることを判定するために使う --}}
+                            @else
+                                <li class="nav-item dropdown">
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        {{-- href=#はトップページに飛ぶ　role="button" だけでどんな要素 (例えば <p>、<span> や <div>) でもボタンコントロールとしてスクリーンリーダーへ認識させることができる--}}
+                                        {{-- aria-haspopup="true" は要素がポップアップ部品を持つことを示す --}}
+                                        {{ Auth::user()->name }} <span class="caret"></span>
+                                        {{--　ログイン中のユーザー名を取得--}}
+                                    </a>
+                                    
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }}
+                                            {{-- ログアウト画面に飛ぶ --}}
+                                        </a>
+                                        
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            {{-- ログアウトフォーム　ログアウト画面につながる　送信方法はPOST  何を非表示にしているの？--}}
+                                            @csrf
+                                            </form>
+                                        </div>
+                                    </li>
+                                    @endguest    
                         </ul>
                     </div>
                 </div>
