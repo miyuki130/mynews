@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Inspiring;
-
+use App\User;
 /*
 |--------------------------------------------------------------------------
 | Console Routes
@@ -16,3 +16,28 @@ use Illuminate\Foundation\Inspiring;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->describe('Display an inspiring quote');
+
+
+Artisan::command('test1', function () {
+    #dd(111);
+    $tables = DB::select('SHOW TABLES');
+    dd($tables);
+});
+
+Artisan::command('create_user', function () {
+    User::forceCreate([
+        'name' => "iede",
+        'email' => "imymy130@gmail.com",
+        'password' => bcrypt('miyuki130'),
+    ]);
+});
+
+Artisan::command('create_user_nakagawa', function () {
+    User::forceCreate([
+        'name' => "nakagawa",
+        'email' => "nakagawa@example.com",
+        'password' => bcrypt('nakagawa1234'),
+    ]);
+});
+
+
