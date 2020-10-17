@@ -26,7 +26,7 @@ Artisan::command('test1', function () {
 
 Artisan::command('create_user', function () {
     User::forceCreate([
-        'name' => "iede",
+        'name' => "miyuki",
         'email' => "imymy130@gmail.com",
         'password' => bcrypt('miyuki130'),
     ]);
