@@ -13,7 +13,7 @@ class AlterHistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::table('histories', function (Blueprint $table) {
+        Schema::table('profile_histories', function (Blueprint $table) {
             $table->dropColumn('profile_id');
         });
     }
