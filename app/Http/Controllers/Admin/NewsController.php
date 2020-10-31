@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\News;
 use App\History;
 use Carbon\Carbon;
+use Storage;
 
 class NewsController extends Controller
 {
@@ -26,8 +27,8 @@ public function create(Request $request)
       
       // フォームから画像が送信されてきたら、保存して、$news->image_path に画像のパスを保存する
       if (isset($form['image'])) {
-        $path = $request->file('image')->store('public/image');
-        $news->image_path = basename($path);
+        $path = Storage::disk('s3')->putFile('/',$form['image'],'public');
+        $news->image_path = Storage::disk('s3')->url($path);
       } else {
           $news->image_path = null;
       }
@@ -42,7 +43,7 @@ public function create(Request $request)
       $news->save(); 
       
       // admin/news/createにリダイレクトする
-      return redirect('admin/news/create');
+      return redirect('admin/news');
   }  
   
   public function index(Request $request)
@@ -82,8 +83,8 @@ public function create(Request $request)
       if ($request->remove == 'true') {
             $news_form['image_path'] = null;
         } elseif ($request->file('image')) {
-            $path = $request->file('image')->store('public/image');
-            $news_form['image_path'] = basename($path);
+            $path = Storage::disk('s3')->putFile('/',$form['image'],'public');
+            $news_form['image_path'] = Storage::disk('s3')->url($path);
         } else {
             $news_form['image_path'] = $news->image_path;
         }
@@ -99,8 +100,8 @@ public function create(Request $request)
     $history->edited_at = Carbon::now();
     $history->save();
 
-    #return redirect('admin/news/');
-    return redirect('admin/news/edit?id='.$request->id);
+    return redirect('admin/news/');
+    // return redirect('admin/news/edit?id='.$request->id);
   }
   
   public function delete(Request $request)
